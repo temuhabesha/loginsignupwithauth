@@ -4,6 +4,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import mysql from 'mysql2'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT
@@ -69,6 +70,12 @@ app.post('/login',async(req,res)=>{
         return res.send('the password is invalid')
     }
     
+    const username1=result[0].username
+
+    const secret_key = process.env.SECRETE_KEY;
+    
+    const token = jwt.sign({username1},secret_key)
+    return res.send({msg:'the user is registered successfully',token})
 
    } catch (error) {
     console.log(error)
